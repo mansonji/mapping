@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>上海破圈广告有限公司 · 组织架构详图（人数+薪资）</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #f5f7fa;
+    color: #333;
+    min-height: 100vh;
+    padding: 32px 20px 60px;
+  }
+
+  /* ─── 顶部标题 ─── */
+  .page-header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .page-header .logo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #ff6b81, #ff4757);
+    color: #fff;
+    padding: 8px 22px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .page-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 6px;
+  }
+  .page-header p {
+    font-size: 13px;
+    color: #888;
+  }
+
+  /* ─── 公司基本信息卡 ─── */
+  .info-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 36px;
+  }
+  .info-chip {
+    background: #fff;
+    border: 1px solid #e5e9f0;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 13px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+  .info-chip .label { color: #999; font-size: 12px; }
+  .info-chip .value { font-weight: 600; color: #222; }
+
+  /* ─── 架构图容器 ─── */
+  .org-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    overflow-x: auto;
+  }
+
+  /* ─── 节点基础样式 ─── */
+  .node {
+    border-radius: 12px;
+    padding: 12px 16px;
+    text-align: center;
+    position: relative;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .node:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,.12) !important;
+  }
+  .node .title { font-size: 14px; font-weight: 700; }
+  .node .subtitle { font-size: 11px; opacity: .8; margin-top: 4px; }
+  .node .badge {
+    display: inline-block;
+    background: rgba(255,255,255,.35);
+    border-radius: 30px;
+    padding: 2px 10px;
+    font-size: 11px;
+    margin-top: 6px;
+  }
+
+  /* ─── 层级颜色 ─── */
+  .n-ceo    { background: linear-gradient(135deg,#1a1a2e,#16213e); color:#fff; box-shadow: 0 6px 20px rgba(26,26,46,.3); }
+  .n-vp     { background: linear-gradient(135deg,#ff6b81,#ff4757); color:#fff; box-shadow: 0 4px 14px rgba(255,71,87,.3); }
+  .n-dept   { background: linear-gradient(135deg,#ff7f50,#ff6347); color:#fff; box-shadow: 0 4px 14px rgba(255,99,71,.25); }
+
+  /* ─── 布局辅助 ─── */
+  .level { display: flex; justify-content: center; align-items: flex-start; gap: 16px; margin-bottom: 0; }
+  .col   { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+  /* ─── 连接线 ─── */
+  .connector-v {
+    width: 2px;
+    background: #dde3f0;
+    margin: 0 auto;
+  }
+  .connector-h {
+    height: 2px;
+    background: #dde3f0;
+    align-self: flex-start;
+    margin-top: 32px;
+  }
+  .branch {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  /* ─── 部门大卡（增强版） ─── */
+  .dept-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    min-width: 280px;
+    max-width: 300px;
+    border-top: 5px solid;
+    overflow: hidden;
+  }
+  .dept-header {
+    padding: 14px 16px;
+    color: #fff;
+  }
+  .dept-header h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dept-header .dept-meta {
+    font-size: 11px;
+    opacity: 0.9;
+    display: flex;
+    gap: 16px;
+  }
+  
+  .dept-header .dept-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* 岗位表格 */
+  .role-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .role-table th {
+    background: #f8f9fc;
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 10px;
+    color: #888;
+    font-weight: 500;
+    border-bottom: 1px solid #eee;
+  }
+  .role-table th:nth-child(2),
+  .role-table th:nth-child(3),
+  .role-table th:nth-child(4) {
+    text-align: center;
+  }
+  .role-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #f5f5f5;
+    vertical-align: middle;
+  }
+  .role-table td:nth-child(1) { font-weight: 600; color: #333; }
+  .role-table td:nth-child(2),
+  .role-table td:nth-child(3),
+  .role-table td:nth-child(4) {
+    text-align: center;
+    font-size: 11px;
+  }
+  .role-table tr:last-child td { border-bottom: none; }
+  .role-table tr:hover { background: #fafbfc; }
+
+  /* 人数标签 */
+  .headcount {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f4fd;
+    color: #2980b9;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-weight: 600;
+    font-size: 11px;
+  }
+  .headcount.high {
+    background: #fff3e0;
+    color: #e67e22;
+  }
+  .headcount.core {
+    background: #fce4ec;
+    color: #c2185b;
+  }
+
+  /* 薪资标签 */
+  .salary {
+    font-weight: 600;
+    color: #27ae60;
+    font-size: 11px;
+  }
+  .salary-unit {
+    font-size: 9px;
+    color: #888;
+    font-weight: 400;
+  }
+
+  /* 招聘状态标签 */
+  .recruit-tag {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .recruit-tag.hot {
+    background: #ffeaea;
+    color: #e74c3c;
+  }
+  .recruit-tag.active {
+    background: #fff3e0;
+    color: #e67e22;
+  }
+  .recruit-tag.normal {
+    background: #e8f5e9;
+    color: #2ecc71;
+  }
+  .recruit-tag.infer {
+    background: #f0f0f0;
+    color: #888;
+  }
+
+  /* 推断标注 */
+  .infer-tag {
+    font-size: 9px;
+    background: #fff3e0;
+    color: #e67e22;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: 4px;
+  }
+
+  /* 底部汇总 */
+  .summary-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin: 32px auto;
+    max-width: 1200px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.07);
+  }
+  .summary-item {
+    text-align: center;
+    min-width: 120px;
+  }
+  .summary-item .num {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ff6b81, #ff4757);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .summary-item .label {
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+  }
+
+  /* 业务线 */
+  .biz-steps {
+    max-width: 1200px;
+    margin: 0 auto 32px;
+    padding: 0 8px;
+  }
+  .biz-steps h2 {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+  .biz-steps-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .biz-step {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 18px;
+    flex: 1;
+    min-width: 150px;
+    border-left: 4px solid;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .biz-step .step-num {
+    font-size: 11px;
+    color: #999;
+  }
+  .biz-step .step-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin: 4px 0;
+  }
+  .biz-step .step-dept {
+    font-size: 12px;
+    color: #666;
+  }
+
+  /* 荣誉资质 */
+  .honor-bar {
+    max-width: 1200px;
+    margin: 0 auto 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+  }
+  .honor-chip {
+    background: linear-gradient(135deg, #ff6b81, #ff4757);
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .honor-chip.gold {
+    background: linear-gradient(135deg, #f1c40f, #f39c12);
+  }
+
+  /* 免责声明 */
+  .disclaimer {
+    max-width: 900px;
+    margin: 40px auto 0;
+    background: #fffbe6;
+    border: 1px solid #ffe58f;
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-size: 12px;
+    color: #7d6608;
+    line-height: 1.8;
+  }
+  .disclaimer strong { color: #d4a017; }
+
+  /* 薪资说明 */
+  .salary-legend {
+    max-width: 900px;
+    margin: 16px auto;
+    font-size: 11px;
+    color: #888;
+    text-align: center;
+  }
+
+  /* ─── 响应式 ─── */
+  @media (max-width: 768px) {
+    .level { flex-wrap: wrap; }
+    .dept-card { min-width: 100%; max-width: 100%; }
+    .summary-bar { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ 顶部 ══════════ -->
+<div class="page-header">
+  <div class="logo-badge">🎯 Mapping Report · 详细版</div>
+  <h1>上海破圈广告有限公司</h1>
+  <p>组织架构详图（人数+薪资）· 数据整合日期：2026年5月9日</p>
+</div>
+
+<!-- ══════════ 荣誉资质（真实） ══════════ -->
+<div class="honor-bar">
+  <div class="honor-chip gold">🏆 小红书种草大赏 金奖×2 + 铜奖×2</div>
+  <div class="honor-chip">🌟 小红书首批ISP整合营销代理</div>
+  <div class="honor-chip">📊 小红书IDEA方法论共创代理（3家之一）</div>
+  <div class="honor-chip">💡 小红书种草学客资营销人才共建代理商</div>
+</div>
+
+<!-- ══════════ 基础信息（真实） ══════════ -->
+<div class="info-bar">
+  <div class="info-chip">
+    <span class="label">法定代表人</span>
+    <span class="value">于玮麟</span>
+  </div>
+  <div class="info-chip">
+    <span class="label">成立时间</span>
+    <span class="value">2020年8月3日</span>
+  </div>
+  <div class="info-chip">
+    <span class="label">注册资本</span>
+    <span class="value">500万元</span>
+  </div>
+  <div class="info-chip">
+    <span class="label">公司规模</span>
+    <span class="value">100-499人（职友集）</span>
+  </div>
+  <div class="info-chip">
+    <span class="label">总部地址</span>
+    <span class="value">上海·普陀区·云岭西路600弄5号3层</span>
+  </div>
+  <div class="info-chip">
+    <span class="label">上级集团</span>
+    <span class="value">bbk!明堂集团</span>
+  </div>
+  <div class="info-chip">
+    <span class="label">核心定位</span>
+    <span class="value">小红书整合营销TOP代理</span>
+  </div>
+</div>
+
+<!-- ══════════ 组织架构详图 ══════════ -->
+<div class="org-wrapper">
+
+  <!-- L1 创始人/法人 -->
+  <div class="col" style="margin-bottom:0;">
+    <div class="node n-ceo" style="width:260px;">
+      <div class="title">👤 严懿</div>
+      <div class="subtitle">bbk!明堂集团 创始人 · CEO</div>
+      <div class="badge">小红书整合营销领军人物</div>
+    </div>
+    <div class="connector-v" style="height:24px;"></div>
+  </div>
+
+  <!-- L2 集团高管层 -->
+  <div class="level" style="margin-bottom:0; gap:40px;">
+    <div class="col">
+      <div class="node n-vp" style="width:220px;">
+        <div class="title">📋 于玮麟</div>
+        <div class="subtitle">上海破圈 法定代表人 · 总指挥</div>
+        <div style="margin-top:8px; font-size:11px; opacity:0.9;">
+          <span>确认信息</span>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="node n-vp" style="width:220px;">
+        <div class="title">🎯 联合创始人</div>
+        <div class="subtitle">COO / 总经理（推断）</div>
+        <div style="margin-top:8px; font-size:11px; opacity:0.9;">
+          <span>预估 <strong>1</strong> 人</span>
+          <span style="margin-left:12px;">薪资 <strong>35-55K</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col" style="margin-bottom:0;">
+    <div class="connector-v" style="height:24px;"></div>
+  </div>
+
+  <!-- L3 五大部门（基于招聘信息推断） -->
+  <div class="level" style="gap: 16px; margin-bottom: 30px; flex-wrap: wrap; justify-content: center;">
+
+    <!-- 客户发展部 -->
+    <div class="dept-card dc-blue">
+      <div class="dept-header" style="background: linear-gradient(135deg, #ff6b81, #ff4757);">
+        <h3>🎯 客户发展部</h3>
+        <div class="dept-meta">
+          <span>👥 预估 <strong>40-70人</strong></span>
+          <span>💰 薪资 <strong>8-20K</strong></span>
+        </div>
+      </div>
+      <table class="role-table">
+        <thead>
+          <tr>
+            <th>岗位</th>
+            <th>人数</th>
+            <th>薪资/月</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>高级广告客户经理 AD/SAM</td>
+            <td><span class="headcount high">3-5</span></td>
+            <td><span class="salary">18-25K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag hot">★ 核心岗</span></td>
+          </tr>
+          <tr>
+            <td>客户总监（KA）<span class="infer-tag">推断</span></td>
+            <td><span class="headcount">2-3</span></td>
+            <td><span class="salary">20-30K<span class="salary-unit">·面议</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+          <tr>
+            <td>客户经理 AM</td>
+            <td><span class="headcount high">5-8</span></td>
+            <td><span class="salary">12-18K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag active">在招</span></td>
+          </tr>
+          <tr>
+            <td>高级客户执行 SAE</td>
+            <td><span class="headcount high">8-12</span></td>
+            <td><span class="salary">10-15K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag active">确认在招</span></td>
+          </tr>
+          <tr>
+            <td>客户执行 AE</td>
+            <td><span class="headcount high">10-15</span></td>
+            <td><span class="salary">7-10K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag active">确认在招</span></td>
+          </tr>
+          <tr>
+            <td>客户成功经理<span class="infer-tag">推断</span></td>
+            <td><span class="headcount">3-5</span></td>
+            <td><span class="salary">10-15K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 创意策略部 -->
+    <div class="dept-card dc-purple">
+      <div class="dept-header" style="background: linear-gradient(135deg, #a29bfe, #6c5ce7);">
+        <h3>💡 创意策略部</h3>
+        <div class="dept-meta">
+          <span>👥 预估 <strong>35-55人</strong></span>
+          <span>💰 薪资 <strong>10-25K</strong></span>
+        </div>
+      </div>
+      <table class="role-table">
+        <thead>
+          <tr>
+            <th>岗位</th>
+            <th>人数</th>
+            <th>薪资/月</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>创意总监 / 策略总监<span class="infer-tag">推断</span></td>
+            <td><span class="headcount">2-3</span></td>
+            <td><span class="salary">25-40K<span class="salary-unit">·面议</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+          <tr>
+            <td>小红书资深策划</td>
+            <td><span class="headcount high">5-8</span></td>
+            <td><span class="salary">15-22K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag hot">★ 核心岗</span></td>
+          </tr>
+          <tr>
+            <td>策划专员（校招）</td>
+            <td><span class="headcount high">5-10</span></td>
+            <td><span class="salary">8-12K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag active">确认在招</span></td>
+          </tr>
+          <tr>
+            <td>广告设计</td>
+            <td><span class="headcount high">8-12</span></td>
+            <td><span class="salary">10-15K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag active">确认在招</span></td>
+          </tr>
+          <tr>
+            <td>资深文案<span class="infer-tag">推断</span></td>
+            <td><span class="headcount">4-6</span></td>
+            <td><span class="salary">12-18K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+          <tr>
+            <td>设计师<span class="infer-tag">推断</span></td>
+            <td><span class="headcount high">6-10</span></td>
+            <td><span class="salary">8-12K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 媒介投放部（核心） -->
+    <div class="dept-card dc-cyan">
+      <div class="dept-header" style="background: linear-gradient(135deg, #fdcb6e, #f39c12); color:#1a1a2e;">
+        <h3>📱 媒介投放部（核心）</h3>
+        <div class="dept-meta">
+          <span>👥 预估 <strong>50-80人</strong></span>
+          <span>💰 薪资 <strong>6-20K</strong></span>
+        </div>
+      </div>
+      <table class="role-table">
+        <thead>
+          <tr>
+            <th>岗位</th>
+            <th>人数</th>
+            <th>薪资/月</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>投放总监<span class="infer-tag">推断</span></td>
+            <td><span class="headcount">1-2</span></td>
+            <td><span class="salary">22-35K<span class="salary-unit">·面议</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+          <tr>
+            <td>小红书媒介经理</td>
+            <td><span class="headcount high core">8-12</span></td>
+            <td><span class="salary">10-18K<span class="salary-unit">·底薪+绩效</span></span></td>
+            <td><span class="recruit-tag hot">★ 核心岗</span></td>
+          </tr>
+          <tr>
+            <td>小红书媒介投放</td>
+            <td><span class="headcount high core">15-25</span></td>
+            <td><span class="salary">8-15K<span class="salary-unit">·底薪+绩效</span></span></td>
+            <td><span class="recruit-tag hot">★ 核心岗</span></td>
+          </tr>
+          <tr>
+            <td>媒介执行（校招）</td>
+            <td><span class="headcount high">8-12</span></td>
+            <td><span class="salary">6-8K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag active">确认在招</span></td>
+          </tr>
+          <tr>
+            <td>SEM/信息流优化<span class="infer-tag">推断</span></td>
+            <td><span class="headcount high">8-15</span></td>
+            <td><span class="salary">8-14K<span class="salary-unit">·底薪+绩效</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+          <tr>
+            <td>媒介资源管理<span class="infer-tag">推断</span></td>
+            <td><span class="headcount">3-5</span></td>
+            <td><span class="salary">8-12K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 内容运营部 -->
+    <div class="dept-card dc-pink">
+      <div class="dept-header" style="background: linear-gradient(135deg, #74b9ff, #0984e3);">
+        <h3>✍️ 内容运营部</h3>
+        <div class="dept-meta">
+          <span>👥 预估 <strong>30-50人</strong></span>
+          <span>💰 薪资 <strong>8-18K</strong></span>
+        </div>
+      </div>
+      <table class="role-table">
+        <thead>
+          <tr>
+            <th>岗位</th>
+            <th>人数</th>
+            <th>薪资/月</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>内容总监<span class="infer-tag">推断</span></td>
+            <td><span class="headcount">1</span></td>
+            <td><span class="salary">20-30K<span class="salary-unit">·面议</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+          <tr>
+            <td>内容运营</td>
+            <td><span class="headcount high">8-15</span></td>
+            <td><span class="salary">10-15K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag hot">★ 核心岗</span></td>
+          </tr>
+          <tr>
+            <td>KOL运营<span class="infer-tag">推断</span></td>
+            <td><span class="headcount high">6-10</span></td>
+            <td><span class="salary">8-12K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+          <tr>
+            <td>短视频制作<span class="infer-tag">推断</span></td>
+            <td><span class="headcount high">8-12</span></td>
+            <td><span class="salary">8-14K<span class="salary-unit">·按项目</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+          <tr>
+            <td>视频编导<span class="infer-tag">推断</span></td>
+            <td><span class="headcount">3-5</span></td>
+            <td><span class="salary">10-15K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+          <tr>
+            <td>达人资源对接<span class="infer-tag">推断</span></td>
+            <td><span class="headcount">4-6</span></td>
+            <td><span class="salary">8-12K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 电商运营部 -->
+    <div class="dept-card dc-green">
+      <div class="dept-header" style="background: linear-gradient(135deg, #55efc4, #00b894); color:#1a1a2e;">
+        <h3>🛒 电商运营部</h3>
+        <div class="dept-meta">
+          <span>👥 预估 <strong>20-35人</strong></span>
+          <span>💰 薪资 <strong>8-18K</strong></span>
+        </div>
+      </div>
+      <table class="role-table">
+        <thead>
+          <tr>
+            <th>岗位</th>
+            <th>人数</th>
+            <th>薪资/月</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>电商总监<span class="infer-tag">推断</span></td>
+            <td><span class="headcount">1</span></td>
+            <td><span class="salary">20-30K<span class="salary-unit">·面议</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+          <tr>
+            <td>电商运营专员</td>
+            <td><span class="headcount high">8-15</span></td>
+            <td><span class="salary">8-14K<span class="salary-unit">·底薪+提成</span></span></td>
+            <td><span class="recruit-tag active">在招</span></td>
+          </tr>
+          <tr>
+            <td>小红书店铺运营<span class="infer-tag">推断</span></td>
+            <td><span class="headcount high">5-8</span></td>
+            <td><span class="salary">8-12K<span class="salary-unit">·底薪+提成</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+          <tr>
+            <td>数据分析<span class="infer-tag">推断</span></td>
+            <td><span class="headcount">3-5</span></td>
+            <td><span class="salary">12-18K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 职能支持部 -->
+    <div class="dept-card dc-orange">
+      <div class="dept-header" style="background: linear-gradient(135deg, #636e72, #b2bec3); color:#1a1a2e;">
+        <h3>🏢 职能支持部</h3>
+        <div class="dept-meta">
+          <span>👥 预估 <strong>15-25人</strong></span>
+          <span>💰 薪资 <strong>6-18K</strong></span>
+        </div>
+      </div>
+      <table class="role-table">
+        <thead>
+          <tr>
+            <th>岗位</th>
+            <th>人数</th>
+            <th>薪资/月</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>HRBP/人事经理<span class="infer-tag">推断</span></td>
+            <td><span class="headcount">2-3</span></td>
+            <td><span class="salary">12-18K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+          <tr>
+            <td>招聘专员</td>
+            <td><span class="headcount">3-5</span></td>
+            <td><span class="salary">7-10K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag active">在招</span></td>
+          </tr>
+          <tr>
+            <td>财务专员</td>
+            <td><span class="headcount">2-3</span></td>
+            <td><span class="salary">8-12K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag normal">常态</span></td>
+          </tr>
+          <tr>
+            <td>行政专员</td>
+            <td><span class="headcount">2-3</span></td>
+            <td><span class="salary">6-8K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag normal">常态</span></td>
+          </tr>
+          <tr>
+            <td>出纳<span class="infer-tag">推断</span></td>
+            <td><span class="headcount">1-2</span></td>
+            <td><span class="salary">6-8K<span class="salary-unit">·13薪</span></span></td>
+            <td><span class="recruit-tag infer">推断</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ 人员汇总 ══════════ -->
+<div class="summary-bar">
+  <div class="summary-item">
+    <div class="num">100-499</div>
+    <div class="label">公司总人数</div>
+  </div>
+  <div class="summary-item">
+    <div class="num">6</div>
+    <div class="label">核心部门</div>
+  </div>
+  <div class="summary-item">
+    <div class="num">35+</div>
+    <div class="label">细分岗位</div>
+  </div>
+  <div class="summary-item">
+    <div class="num">50-80</div>
+    <div class="label">媒介投放部占比</div>
+  </div>
+  <div class="summary-item">
+    <div class="num">68.8%</div>
+    <div class="label">10-20K薪资占比</div>
+  </div>
+</div>
+
+<!-- ══════════ 薪资参考说明 ══════════ -->
+<div class="salary-legend">
+  💡 薪资数据来源：职友集 · 68.8%岗位薪资10-20K，小红书媒介6-8K · 数据基于上海小红书营销行业
+  <br>备注：薪资为税前月薪，13薪为行业惯例，部分岗位含绩效提成，实际薪资以offer为准
+</div>
+
+<!-- ══════════ 小红书IDEA方法论框架 ══════════ -->
+<div class="biz-steps">
+  <h2>📌 小红书IDEA营销方法论框架（业务主线）</h2>
+  <div class="biz-steps-grid">
+    <div class="biz-step" style="border-color:#ff6b81;">
+      <div class="step-num">IDEA</div>
+      <div class="step-title" style="color:#ff6b81;">Insight 洞察</div>
+      <div class="step-dept">策略部 负责</div>
+    </div>
+    <div class="biz-step" style="border-color:#fdcb6e;">
+      <div class="step-num">IDEA</div>
+      <div class="step-title" style="color:#f39c12;">Define 定义</div>
+      <div class="step-dept">创意策略部 负责</div>
+    </div>
+    <div class="biz-step" style="border-color:#74b9ff;">
+      <div class="step-num">IDEA</div>
+      <div class="step-title" style="color:#0984e3;">Execute 执行</div>
+      <div class="step-dept">媒介投放部 负责</div>
+    </div>
+    <div class="biz-step" style="border-color:#55efc4;">
+      <div class="step-num">IDEA</div>
+      <div class="step-title" style="color:#00b894;">Assess 评估</div>
+      <div class="step-dept">电商运营 × 数据分析</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 免责说明 ══════════ -->
+<div class="disclaimer">
+  <strong>⚠️ Mapping 说明：</strong>
+  本图基于公开渠道（工商登记、爱企查、企查查、启信宝、BOSS直聘、职友集、小红书Partner官网等）整合推演，
+  <strong>仅法定代表人（于玮麟）和上级集团（bbk!明堂·严懿）为已确认信息</strong>，其余层级、人数及薪资均基于BOSS直聘招聘信息、职友集数据及行业惯例综合推断，
+  <strong>实际数据可能与本图存在差异</strong>。
+  <br><br>
+  <strong>信息来源：</strong>
+  <br>✅ 工商信息：爱企查、企查查、启信宝（法定代表人、成立时间、注册资本、地址）
+  <br>✅ 集团信息：bbk!明堂官网、知乎专栏专访、搜狐商业报道
+  <br>✅ 荣誉资质：小红书Partner官网、Digitaling报道
+  <br>✅ 招聘岗位：Boss直聘（AD/SAM、策划专员、内容运营、AE/SAE等9个岗位）
+  <br>✅ 薪资数据：职友集（68.8%岗位10-20K，小红书媒介6-8K）
+  <br>⚠️ 其余岗位及薪资为综合推断，建议通过脉脉或内部人脉二次核实。
+</div>
+
+<div style="text-align:center; margin-top:20px; font-size:11px; color:#bbb;">
+  数据来源：爱企查 | 企查查 | 启信宝 | BOSS直聘 | 职友集 | bbk!明堂官网 | 小红书Partner | Digitaling · 整合时间：2026-05-09
+</div>
+
+</body>
+</html>

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>广告公司组织架构Mapping - 竞品调研</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* 背景装饰 */
+  .bg-decoration {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .bg-circle:nth-child(1) { width: 600px; height: 600px; top: -200px; right: -100px; }
+  .bg-circle:nth-child(2) { width: 400px; height: 400px; bottom: -100px; left: -100px; }
+  .bg-circle:nth-child(3) { width: 300px; height: 300px; top: 50%; left: 30%; }
+
+  /* 粒子效果 */
+  .particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    animation: float 15s infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* 主容器 */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+  }
+
+  /* 顶部标题区 */
+  .hero {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    backdrop-filter: blur(10px);
+  }
+  .hero-badge span {
+    font-size: 18px;
+  }
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 0%, #a8dadc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.7);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+  .hero .date {
+    margin-top: 20px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* 统计数据 */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+  }
+  .stat-item {
+    text-align: center;
+    padding: 20px 30px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .stat-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  }
+  .stat-item .num {
+    font-size: 36px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ff6b81, #ff4757, #a8dadc, #1565c0);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient 5s ease infinite;
+  }
+  @keyframes gradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  .stat-item .label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 8px;
+  }
+
+  /* 公司卡片网格 */
+  .companies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 60px;
+  }
+
+  /* 公司卡片 */
+  .company-card {
+    background: rgba(255,255,255,0.95);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .company-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .company-card .card-header {
+    padding: 30px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .company-card:nth-child(1) .card-header {
+    background: linear-gradient(135deg, #ff6b81, #ff4757);
+  }
+  .company-card:nth-child(2) .card-header {
+    background: linear-gradient(135deg, #ff6b8a, #ff8c6b);
+  }
+  .company-card:nth-child(3) .card-header {
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+  }
+  .card-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    transform: rotate(45deg);
+  }
+  .card-header .company-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .card-header .company-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+  .card-header .company-tag {
+    font-size: 12px;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+  }
+  .card-header .arrow {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    opacity: 0.7;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .company-card:hover .arrow {
+    transform: translateX(5px);
+    opacity: 1;
+  }
+
+  .card-body {
+    padding: 24px;
+    color: #333;
+  }
+  .card-body .info-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .card-body .info-row:last-child {
+    border-bottom: none;
+  }
+  .info-row .info-icon {
+    font-size: 18px;
+  }
+  .info-row .info-text {
+    flex: 1;
+    font-size: 13px;
+  }
+  .info-row .info-text .label {
+    color: #888;
+    font-size: 11px;
+  }
+  .info-row .info-text .value {
+    font-weight: 600;
+    color: #333;
+    margin-top: 2px;
+  }
+
+  .card-footer {
+    padding: 16px 24px;
+    background: #f8f9fc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-footer .salary-range {
+    font-size: 12px;
+    color: #666;
+  }
+  .card-footer .salary-range strong {
+    color: #27ae60;
+    font-size: 16px;
+  }
+  .card-footer .view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    transition: transform 0.3s;
+  }
+  .company-card:nth-child(1) .view-btn { background: linear-gradient(135deg, #ff6b81, #ff4757); }
+  .company-card:nth-child(2) .view-btn { background: linear-gradient(135deg, #ff6b8a, #ff8c6b); }
+  .company-card:nth-child(3) .view-btn { background: linear-gradient(135deg, #1565c0, #0d47a1); }
+  .company-card:hover .view-btn {
+    transform: scale(1.05);
+  }
+
+  /* 底部说明 */
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .footer p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.8;
+  }
+  .footer .tech-stack {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .tech-tag {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* 响应式 */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 28px; }
+    .stats { gap: 16px; }
+    .stat-item { padding: 16px 20px; min-width: 140px; }
+    .stat-item .num { font-size: 28px; }
+    .companies-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 背景装饰 -->
+<div class="bg-decoration">
+  <div class="bg-circle"></div>
+  <div class="bg-circle"></div>
+  <div class="bg-circle"></div>
+</div>
+
+<!-- 粒子效果 -->
+<div class="particles">
+  <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+  <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+  <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+  <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
+  <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
+  <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+  <div class="particle" style="left: 70%; animation-delay: 2.5s;"></div>
+  <div class="particle" style="left: 80%; animation-delay: 4.5s;"></div>
+  <div class="particle" style="left: 90%; animation-delay: 1.5s;"></div>
+</div>
+
+<div class="container">
+
+  <!-- 顶部标题 -->
+  <div class="hero">
+    <div class="hero-badge">
+      <span>🎯</span>
+      Recruitment Intelligence Report
+    </div>
+    <h1>小红书代运营竞品公司调研</h1>
+    <p>整合招聘平台数据、工商信息、员工评价等多维度信息，深度解析竞品公司组织架构、人数规模、薪资区间，为人才招聘策略提供数据支撑。</p>
+    <div class="date">数据整合日期：2026年5月9日</div>
+  </div>
+
+  <!-- 统计数据 -->
+  <div class="stats">
+    <div class="stat-item">
+      <div class="num">3</div>
+      <div class="label">目标公司数量</div>
+    </div>
+    <div class="stat-item">
+      <div class="num">15+</div>
+      <div class="label">涵盖部门数量</div>
+    </div>
+    <div class="stat-item">
+      <div class="num">50+</div>
+      <div class="label">细分岗位类型</div>
+    </div>
+    <div class="stat-item">
+      <div class="num">5K-50K</div>
+      <div class="label">薪资区间范围</div>
+    </div>
+  </div>
+
+  <!-- 公司卡片 -->
+  <div class="companies-grid">
+
+    <!-- 破圈广告 -->
+    <a href="shanghai-poquan.html" class="company-card">
+      <div class="card-header">
+        <div class="arrow">→</div>
+        <div class="company-icon">🎯</div>
+        <div class="company-name">上海破圈广告有限公司</div>
+        <div class="company-tag">bbk!明堂集团旗下 · 小红书整合营销TOP代理</div>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <span class="info-icon">👤</span>
+          <div class="info-text">
+            <div class="label">法定代表人</div>
+            <div class="value">于玮麟</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">📅</span>
+          <div class="info-text">
+            <div class="label">成立时间</div>
+            <div class="value">2020年8月3日</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">👥</span>
+          <div class="info-text">
+            <div class="label">公司规模</div>
+            <div class="value">100-499人</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">📍</span>
+          <div class="info-text">
+            <div class="label">总部地址</div>
+            <div class="value">上海·普陀区</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">🏆</span>
+          <div class="info-text">
+            <div class="label">核心荣誉</div>
+            <div class="value">小红书种草大赏金奖×2</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="salary-range">薪资区间 <strong>8-30K</strong></div>
+        <div class="view-btn">查看详情 →</div>
+      </div>
+    </a>
+
+    <!-- 小花猫 -->
+    <a href="xiaohuamao.html" class="company-card">
+      <div class="card-header">
+        <div class="arrow">→</div>
+        <div class="company-icon">🐱</div>
+        <div class="company-name">上海小花猫文化传播有限公司</div>
+        <div class="company-tag">专注互联网数字营销 · 电商整合营销服务商</div>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <span class="info-icon">👤</span>
+          <div class="info-text">
+            <div class="label">法定代表人</div>
+            <div class="value">徐明</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">📅</span>
+          <div class="info-text">
+            <div class="label">成立时间</div>
+            <div class="value">2015年6月18日</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">👥</span>
+          <div class="info-text">
+            <div class="label">公司规模</div>
+            <div class="value">200-500人</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">📍</span>
+          <div class="info-text">
+            <div class="label">总部地址</div>
+            <div class="value">上海·静安区</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">⭐</span>
+          <div class="info-text">
+            <div class="label">核心业务</div>
+            <div class="value">小红书+抖音+全平台整合营销</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="salary-range">薪资区间 <strong>6-35K</strong></div>
+        <div class="view-btn">查看详情 →</div>
+      </div>
+    </a>
+
+    <!-- 卓尔数科 -->
+    <a href="zhuoer-shuke.html" class="company-card">
+      <div class="card-header">
+        <div class="arrow">→</div>
+        <div class="company-icon">🏢</div>
+        <div class="company-name">武汉卓尔数字传媒科技有限公司</div>
+        <div class="company-tag">卓尔智联集团旗下 · 营销技术解决方案提供商</div>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <span class="info-icon">👤</span>
+          <div class="info-text">
+            <div class="label">法定代表人/CEO</div>
+            <div class="value">陈程</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">📅</span>
+          <div class="info-text">
+            <div class="label">成立时间</div>
+            <div class="value">2018年10月30日</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">👥</span>
+          <div class="info-text">
+            <div class="label">公司规模</div>
+            <div class="value">500-999人</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">📍</span>
+          <div class="info-text">
+            <div class="label">总部地址</div>
+            <div class="value">武汉·东湖新技术开发区</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">🌐</span>
+          <div class="info-text">
+            <div class="label">服务客户</div>
+            <div class="value">全球5000+企业客户</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="salary-range">薪资区间 <strong>6-50K</strong></div>
+        <div class="view-btn">查看详情 →</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- 底部说明 -->
+  <div class="footer">
+    <p>本报告数据来源包括：企查查、爱企查、职友集、看准网、BOSS直聘、猎聘、公司官网等公开信息平台。</p>
+    <p style="margin-top: 8px;">数据截至2026年5月，实际信息以公司官方披露为准。</p>
+    <div class="tech-stack">
+      <span class="tech-tag">🔍 工商数据</span>
+      <span class="tech-tag">💼 招聘平台</span>
+      <span class="tech-tag">⭐ 员工评价</span>
+      <span class="tech-tag">📊 薪资分析</span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
